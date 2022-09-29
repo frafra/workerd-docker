@@ -1,10 +1,13 @@
-FROM node:18
+FROM node:18-slim
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -qy tini libc++1
+    DEBIAN_FRONTEND=noninteractive apt-get install -qy libc++1 && \
+    apt-get clean
 
-WORKDIR /app
-RUN npm install workerd
+USER node
+WORKDIR /home/node
+RUN npm install workerd && \
+    rm -rf .npm/
 COPY my-config.capnp hello.js ./
 
-CMD ["tini", "./node_modules/.bin/workerd", "serve", "my-config.capnp"]
+CMD ["npx", "workerd", "serve", "my-config.capnp"]
