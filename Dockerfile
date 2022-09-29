@@ -1,7 +1,7 @@
 FROM node:18-slim
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -qy libc++1 && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -qy libc++1 libunwind-13 && \
     apt-get clean
 
 USER node
